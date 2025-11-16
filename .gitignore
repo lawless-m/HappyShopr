@@ -1,0 +1,10 @@
+_build/
+.rebar3/
+rebar3.crashdump
+*.beam
+*.dump
+erl_crash.dump
+.eunit/
+data/
+*.log
+.DS_Store
