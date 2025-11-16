@@ -1,0 +1,5 @@
+-name happyshopr@127.0.0.1
+-setcookie happyshopr_secret_cookie_change_in_production
++K true
++A 32
+-env ERL_MAX_PORTS 4096
