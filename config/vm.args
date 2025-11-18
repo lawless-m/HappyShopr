@@ -1,4 +1,4 @@
--name happyshopr@127.0.0.1
+-name happyshopr@172.233.189.66
 -setcookie happyshopr_secret_cookie_change_in_production
 +K true
 +A 32

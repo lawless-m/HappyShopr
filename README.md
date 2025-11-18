@@ -53,22 +53,22 @@ cd HappyShopr
 # Fetch dependencies and compile
 rebar3 compile
 
-# Run in development mode
-rebar3 shell
+# Run in development mode (requires node name for Mnesia disc_copies)
+rebar3 shell --name happyshopr@172.233.189.66
 
 # Or build a release
 rebar3 release
 _build/default/rel/happyshopr/bin/happyshopr console
 ```
 
-The application will start on `http://localhost:8080`
+The application will start on `http://172.233.189.66:8080`
 
 ### First-Time Setup
 
-1. Open `http://localhost:8080` in your browser
+1. Open `http://172.233.189.66:8080` in your browser
 2. Click the Settings button (⚙️)
 3. Configure:
-   - **API URL:** `http://localhost:8080` (or your server URL)
+   - **API URL:** `http://172.233.189.66:8080`
    - **API Key:** `demo-api-key-replace-in-production` (default)
    - **List ID:** Leave empty to create a new list
 4. Click Save
@@ -88,7 +88,7 @@ Authorization: Bearer <your-api-key>
 ### Base URL
 
 ```
-http://localhost:8080/api/v1
+http://172.233.189.66:8080/api/v1
 ```
 
 ### Endpoints
@@ -482,6 +482,18 @@ Progress counters only count required items. Example:
 
 ## Troubleshooting
 
+### Mnesia "bad_type" or "disc_copies" Errors
+
+If you see errors like `{bad_type, table_name, disc_copies, nonode@nohost}`, you need to start the shell with a node name:
+
+```bash
+# Instead of: rebar3 shell
+# Use:
+rebar3 shell --name happyshopr@172.233.189.66
+```
+
+Mnesia's `disc_copies` storage requires a distributed Erlang node with a proper name.
+
 ### Port Already in Use
 
 Change the port in `config/sys.config` or kill the process:
@@ -554,16 +566,16 @@ rebar3 ct
 
 ```bash
 # Health check
-curl http://localhost:8080/health
+curl http://172.233.189.66:8080/health
 
 # Create list
-curl -X POST http://localhost:8080/api/v1/lists \
+curl -X POST http://172.233.189.66:8080/api/v1/lists \
   -H "Authorization: Bearer demo-api-key-replace-in-production" \
   -H "Content-Type: application/json" \
   -d '{"name": "Test List"}'
 
 # Add items with recipe
-curl -X POST http://localhost:8080/api/v1/lists/<list-id>/items \
+curl -X POST http://172.233.189.66:8080/api/v1/lists/<list-id>/items \
   -H "Authorization: Bearer demo-api-key-replace-in-production" \
   -H "Content-Type: application/json" \
   -d '{
@@ -576,7 +588,7 @@ curl -X POST http://localhost:8080/api/v1/lists/<list-id>/items \
   }'
 
 # Get list with items
-curl http://localhost:8080/api/v1/lists/<list-id> \
+curl http://172.233.189.66:8080/api/v1/lists/<list-id> \
   -H "Authorization: Bearer demo-api-key-replace-in-production"
 ```
 

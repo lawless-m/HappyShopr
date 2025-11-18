@@ -7,7 +7,6 @@
    [kernel,
     stdlib,
     sasl,
-    mnesia,
     cowboy,
     jsx
    ]},
