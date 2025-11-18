@@ -19,20 +19,34 @@ init([]) ->
         {'_', [
             % Static files
             {"/", cowboy_static, {priv_file, happyshopr, "static/index.html"}},
+            {"/shopr", cowboy_static, {priv_file, happyshopr, "static/index.html"}},
+            {"/shopr/", cowboy_static, {priv_file, happyshopr, "static/index.html"}},
             {"/css/[...]", cowboy_static, {priv_dir, happyshopr, "static/css"}},
             {"/js/[...]", cowboy_static, {priv_dir, happyshopr, "static/js"}},
+            {"/shopr/css/[...]", cowboy_static, {priv_dir, happyshopr, "static/css"}},
+            {"/shopr/js/[...]", cowboy_static, {priv_dir, happyshopr, "static/js"}},
 
             % API endpoints
             {"/health", health_handler, []},
+            {"/shopr/health", health_handler, []},
             {"/api/v1/lists", lists_handler, [list]},
+            {"/shopr/api/v1/lists", lists_handler, [list]},
             {"/api/v1/lists/:list_id", lists_handler, [get_list]},
+            {"/shopr/api/v1/lists/:list_id", lists_handler, [get_list]},
             {"/api/v1/lists/:list_id/items", items_handler, [items]},
+            {"/shopr/api/v1/lists/:list_id/items", items_handler, [items]},
             {"/api/v1/lists/:list_id/items/completed", items_handler, [clear_completed]},
+            {"/shopr/api/v1/lists/:list_id/items/completed", items_handler, [clear_completed]},
             {"/api/v1/lists/:list_id/items/:item_id", items_handler, [item]},
+            {"/shopr/api/v1/lists/:list_id/items/:item_id", items_handler, [item]},
             {"/api/v1/lists/:list_id/items/:item_id/complete", items_handler, [complete]},
+            {"/shopr/api/v1/lists/:list_id/items/:item_id/complete", items_handler, [complete]},
             {"/api/v1/lists/:list_id/items/:item_id/required", items_handler, [required]},
+            {"/shopr/api/v1/lists/:list_id/items/:item_id/required", items_handler, [required]},
             {"/api/v1/lists/:list_id/recipes", items_handler, [recipes_summary]},
-            {"/api/v1/lists/:list_id/recipes/:recipe_id/items", items_handler, [recipe_items]}
+            {"/shopr/api/v1/lists/:list_id/recipes", items_handler, [recipes_summary]},
+            {"/api/v1/lists/:list_id/recipes/:recipe_id/items", items_handler, [recipe_items]},
+            {"/shopr/api/v1/lists/:list_id/recipes/:recipe_id/items", items_handler, [recipe_items]}
         ]}
     ]),
 

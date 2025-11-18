@@ -4,7 +4,7 @@ This document contains the API configuration and usage instructions for Claude A
 
 ## API Configuration
 
-**Base URL:** `http://172.233.189.66:8080/api/v1`
+**Base URL:** `https://steponnopets.net/shopr/api/v1`
 **API Key:** `demo-api-key-replace-in-production`
 **Authentication:** Bearer token (include in all requests)
 
@@ -15,18 +15,20 @@ Authorization: Bearer demo-api-key-replace-in-production
 Content-Type: application/json
 ```
 
+**Note:** The service is accessible at `https://steponnopets.net/shopr/`
+
 ## Core Workflows
 
 ### 1. Get or Create a Shopping List
 
 First, check for existing lists:
 ```
-GET /api/v1/lists
+GET /lists
 ```
 
 If no lists exist or user wants a new one:
 ```
-POST /api/v1/lists
+POST /lists
 {"name": "Shopping List"}
 ```
 
@@ -36,7 +38,7 @@ Save the `list_id` from the response for subsequent operations.
 
 When user mentions ingredients or items to buy:
 ```
-POST /api/v1/lists/{list_id}/items
+POST /lists/{list_id}/items
 {
   "items": [
     {"name": "Milk", "quantity": "2 liters"},
@@ -49,7 +51,7 @@ POST /api/v1/lists/{list_id}/items
 
 When user mentions a recipe with ingredients:
 ```
-POST /api/v1/lists/{list_id}/items
+POST /lists/{list_id}/items
 {
   "items": [
     {"name": "Spaghetti", "quantity": "500g"},
@@ -66,27 +68,27 @@ POST /api/v1/lists/{list_id}/items
 ### 4. Get List with All Items
 
 ```
-GET /api/v1/lists/{list_id}
+GET /lists/{list_id}
 ```
 
 ### 5. Mark Items as Completed
 
 ```
-POST /api/v1/lists/{list_id}/items/{item_id}/complete
+POST /lists/{list_id}/items/{item_id}/complete
 {"completed": true}
 ```
 
 ### 6. Toggle Item Required Status
 
 ```
-POST /api/v1/lists/{list_id}/items/{item_id}/required
+POST /lists/{list_id}/items/{item_id}/required
 {"required": false}
 ```
 
 ### 7. View Recipe Progress
 
 ```
-GET /api/v1/lists/{list_id}/recipes
+GET /lists/{list_id}/recipes
 ```
 
 ## Behavior Notes

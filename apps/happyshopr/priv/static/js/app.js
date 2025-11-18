@@ -18,9 +18,14 @@ class AppState {
         if (saved) {
             return JSON.parse(saved);
         }
+        // Auto-detect base path (e.g., /shopr)
+        const path = window.location.pathname;
+        const basePath = path.startsWith('/shopr') ? '/shopr' : '';
+        const defaultApiUrl = window.location.origin + basePath;
+
         // Default config
         return {
-            apiUrl: window.location.origin,
+            apiUrl: defaultApiUrl,
             apiKey: 'demo-api-key-replace-in-production',
             listId: null
         };
