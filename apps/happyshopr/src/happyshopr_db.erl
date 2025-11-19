@@ -21,7 +21,9 @@
     clear_completed/1,
     toggle_required/2,
     % Recipe operations
-    get_recipes_summary/1
+    get_recipes_summary/1,
+    % Utility functions
+    generate_uuid/0
 ]).
 
 -define(TIMEOUT, 5000).
