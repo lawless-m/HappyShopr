@@ -3,108 +3,789 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HappyShopr 🛒</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>HappyShopr</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        .item-completed {
-            text-decoration: line-through;
-            opacity: 0.6;
+        :root {
+            --cream: #FBF8F3;
+            --paper: #F5F1E8;
+            --terracotta: #D4705E;
+            --terracotta-dark: #B85D4D;
+            --sage: #8B9E7D;
+            --sage-dark: #6F8363;
+            --brown: #7B5E4E;
+            --brown-light: #9B7E6E;
+            --carrot: #E88D5A;
+            --leafy: #6B8F71;
+            --charcoal: #3A3330;
+            --charcoal-light: #5A504A;
         }
-        .item-not-required {
-            opacity: 0.5;
-            font-style: italic;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .item-not-required.item-completed {
-            text-decoration: line-through;
-            opacity: 0.3;
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
-        .recipe-group {
-            border-left: 4px solid #3B82F6;
-            padding-left: 1rem;
-        }
-        .modal {
-            display: none;
+
+        /* Organic paper texture background */
+        body::before {
+            content: '';
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(232, 141, 90, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 158, 125, 0.04) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
         }
-        .modal.active {
+
+        header {
+            background: linear-gradient(135deg, var(--terracotta) 0%, var(--brown) 100%);
+            padding: 2rem 1.5rem 2.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 4px 12px rgba(123, 94, 78, 0.15),
+                0 2px 4px rgba(123, 94, 78, 0.1);
+        }
+
+        /* Decorative header shapes */
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 0, 0, 0.05) 0%, transparent 60%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            color: var(--paper);
+            letter-spacing: -0.02em;
+            text-shadow:
+                2px 2px 0 rgba(0, 0, 0, 0.1),
+                0 4px 12px rgba(0, 0, 0, 0.15);
+            font-optical-sizing: auto;
+        }
+
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: var(--paper);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3B82F6;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
+
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: rotate(90deg) scale(1.1);
+            border-color: rgba(255, 255, 255, 0.5);
         }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Loading spinner with organic feel */
+        .spinner-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 0;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--paper);
+            border-top: 4px solid var(--terracotta);
+            border-right: 4px solid var(--sage);
+            border-radius: 50%;
+            animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Error state with hand-drawn border */
+        .error-box {
+            background: rgba(212, 112, 94, 0.08);
+            border: 2px dashed var(--terracotta);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--terracotta-dark);
+            font-weight: 500;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px) rotate(-1deg); }
+            75% { transform: translateX(8px) rotate(1deg); }
+        }
+
+        /* View controls with organic buttons */
+        .view-controls {
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.08),
+                0 1px 2px rgba(0, 0, 0, 0.06);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--terracotta) 0%, var(--brown) 100%);
+            color: var(--paper);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 6px 20px rgba(212, 112, 94, 0.25),
+                0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background: var(--paper);
+            color: var(--charcoal);
+            border: 2px solid rgba(123, 94, 78, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: var(--sage);
+            color: white;
+            border-color: var(--sage);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary.active {
+            background: var(--sage);
+            color: white;
+            border-color: var(--sage-dark);
+            box-shadow:
+                0 4px 12px rgba(139, 158, 125, 0.3),
+                inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--charcoal-light);
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-label:hover {
+            background: rgba(139, 158, 125, 0.08);
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: var(--sage);
+        }
+
+        /* Items with pinned note aesthetic */
+        .items-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.25rem;
+            box-shadow:
+                0 3px 12px rgba(123, 94, 78, 0.08),
+                0 1px 4px rgba(0, 0, 0, 0.06);
+            border-left: 4px solid var(--sage);
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: dropIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+        }
+
+        @keyframes dropIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) rotate(-2deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        .item-card:nth-child(even) {
+            animation-delay: 0.05s;
+        }
+
+        .item-card:nth-child(3n) {
+            animation-delay: 0.1s;
+        }
+
+        .item-card:hover {
+            transform: translateY(-3px) rotate(0.5deg);
+            box-shadow:
+                0 8px 24px rgba(123, 94, 78, 0.15),
+                0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-completed .item-card {
+            opacity: 0.6;
+            background: rgba(245, 241, 232, 0.8);
+        }
+
+        .item-completed .item-name {
+            text-decoration: line-through;
+            color: var(--charcoal-light);
+        }
+
+        .item-not-required {
+            opacity: 0.5;
+        }
+
+        .item-not-required .item-card {
+            border-left-style: dashed;
+        }
+
+        .item-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-checkbox {
+            width: 24px;
+            height: 24px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--sage);
+            flex-shrink: 0;
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: 0.25rem;
+            line-height: 1.4;
+        }
+
+        .item-quantity {
+            color: var(--terracotta);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .item-notes {
+            color: var(--charcoal-light);
+            font-size: 0.9rem;
+            font-style: italic;
+            margin-top: 0.25rem;
+        }
+
+        .item-category {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--sage) 0%, var(--leafy) 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .item-btn {
+            padding: 0.4rem 0.75rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .item-btn-required {
+            background: rgba(139, 158, 125, 0.15);
+            color: var(--sage-dark);
+        }
+
+        .item-btn-required:hover {
+            background: var(--sage);
+            color: white;
+        }
+
+        .item-btn-delete {
+            background: rgba(212, 112, 94, 0.15);
+            color: var(--terracotta-dark);
+        }
+
+        .item-btn-delete:hover {
+            background: var(--terracotta);
+            color: white;
+        }
+
+        /* Recipe groups */
+        .recipe-group {
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .recipe-header {
+            background: linear-gradient(135deg, var(--terracotta) 0%, var(--carrot) 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow:
+                0 3px 12px rgba(212, 112, 94, 0.2),
+                0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .recipe-header:hover {
+            transform: translateX(5px);
+            box-shadow:
+                0 6px 20px rgba(212, 112, 94, 0.3),
+                0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .recipe-name {
+            font-family: 'Fraunces', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .recipe-progress {
+            font-size: 0.9rem;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        /* Action buttons */
+        .add-items-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--sage) 0%, var(--leafy) 100%);
+            color: white;
+            padding: 1.25rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow:
+                0 4px 16px rgba(139, 158, 125, 0.25),
+                0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .add-items-btn:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                0 8px 24px rgba(139, 158, 125, 0.35),
+                0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .add-items-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .clear-completed-btn {
+            width: 100%;
+            background: rgba(212, 112, 94, 0.1);
+            color: var(--terracotta-dark);
+            padding: 0.9rem;
+            border: 2px solid rgba(212, 112, 94, 0.2);
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clear-completed-btn:hover {
+            background: var(--terracotta);
+            color: white;
+            border-color: var(--terracotta);
+            transform: translateY(-2px);
+        }
+
+        /* Modals with organic feel */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(58, 51, 48, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                0 8px 24px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            padding: 2rem;
+            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--paper);
+        }
+
+        .modal-title {
+            font-family: 'Fraunces', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--charcoal);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--charcoal-light);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(212, 112, 94, 0.1);
+            color: var(--terracotta);
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid var(--paper);
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            color: var(--charcoal);
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--sage);
+            box-shadow: 0 0 0 3px rgba(139, 158, 125, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            min-height: 180px;
+        }
+
+        .form-hint {
+            font-size: 0.85rem;
+            color: var(--charcoal-light);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            header {
+                padding: 1.5rem 1rem 2rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 1.5rem 1rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+
+            .modal-title {
+                font-size: 1.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Stagger animations for items */
+        .item-card:nth-child(1) { animation-delay: 0.05s; }
+        .item-card:nth-child(2) { animation-delay: 0.1s; }
+        .item-card:nth-child(3) { animation-delay: 0.15s; }
+        .item-card:nth-child(4) { animation-delay: 0.2s; }
+        .item-card:nth-child(5) { animation-delay: 0.25s; }
+        .item-card:nth-child(n+6) { animation-delay: 0.3s; }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-50">
+<body>
     <!-- Header -->
-    <header class="bg-blue-600 text-white p-4 shadow-md">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">🛒 HappyShopr</h1>
-            <button id="settingsBtn" class="p-2 hover:bg-blue-700 rounded">
-                ⚙️
-            </button>
+    <header>
+        <div class="header-content">
+            <h1>HappyShopr</h1>
+            <button id="settingsBtn" class="settings-btn" aria-label="Settings">⚙</button>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-4xl mx-auto p-4">
+    <main>
         <!-- Loading State -->
-        <div id="loadingState" class="flex justify-center items-center py-12">
+        <div id="loadingState" class="spinner-container">
             <div class="spinner"></div>
         </div>
 
         <!-- Error State -->
-        <div id="errorState" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <div id="errorState" class="hidden error-box">
             <p id="errorMessage"></p>
         </div>
 
         <!-- View Controls -->
-        <div id="viewControls" class="hidden mb-4 space-y-2">
-            <div class="flex gap-2">
-                <button id="viewAllBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                    All Items
-                </button>
-                <button id="viewByRecipeBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
-                    By Recipe
-                </button>
+        <div id="viewControls" class="hidden view-controls">
+            <div class="button-group">
+                <button id="viewAllBtn" class="btn btn-primary">All Items</button>
+                <button id="viewByRecipeBtn" class="btn btn-secondary">By Recipe</button>
             </div>
-            <label class="flex items-center gap-2">
-                <input type="checkbox" id="hideCompletedCheckbox" class="rounded">
+            <label class="checkbox-label">
+                <input type="checkbox" id="hideCompletedCheckbox">
                 <span>Hide Completed Items</span>
             </label>
         </div>
 
         <!-- Items List -->
-        <div id="itemsList" class="hidden space-y-4 mb-6">
+        <div id="itemsList" class="hidden items-container">
             <!-- Items will be rendered here -->
         </div>
 
-        <!-- Add Items Button (Fixed at bottom on mobile) -->
+        <!-- Add Items Button -->
         <div id="addItemsContainer" class="hidden">
-            <button id="addItemsBtn" class="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 font-semibold">
+            <button id="addItemsBtn" class="add-items-btn">
                 + Add Items
             </button>
         </div>
 
         <!-- Clear Completed Button -->
-        <div id="clearCompletedContainer" class="hidden mt-4">
-            <button id="clearCompletedBtn" class="w-full bg-red-100 text-red-700 py-2 px-4 rounded hover:bg-red-200">
+        <div id="clearCompletedContainer" class="hidden">
+            <button id="clearCompletedBtn" class="clear-completed-btn">
                 Clear Completed (<span id="completedCount">0</span>)
             </button>
         </div>
@@ -112,39 +793,31 @@
 
     <!-- Add Items Modal -->
     <div id="addItemsModal" class="modal">
-        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold">Add Items</h2>
-                <button id="closeAddModalBtn" class="text-gray-500 hover:text-gray-700 text-2xl">
-                    ×
-                </button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add Items</h2>
+                <button id="closeAddModalBtn" class="close-btn" aria-label="Close">×</button>
             </div>
 
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1">Recipe Name (optional)</label>
-                    <input type="text" id="recipeNameInput"
-                           class="w-full border border-gray-300 rounded px-3 py-2"
+            <div>
+                <div class="form-group">
+                    <label class="form-label" for="recipeNameInput">Recipe Name (optional)</label>
+                    <input type="text" id="recipeNameInput" class="form-input"
                            placeholder="e.g., Spaghetti Carbonara">
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium mb-1">Items (one per line)</label>
-                    <textarea id="itemsTextarea" rows="8"
-                              class="w-full border border-gray-300 rounded px-3 py-2 font-mono text-sm"
+                <div class="form-group">
+                    <label class="form-label" for="itemsTextarea">Items (one per line)</label>
+                    <textarea id="itemsTextarea" class="form-textarea"
                               placeholder="Milk 2 litres&#10;Bread&#10;Eggs 6&#10;Butter"></textarea>
-                    <p class="text-xs text-gray-600 mt-1">
+                    <p class="form-hint">
                         Tip: Write items like "Milk 2 litres" or just "Bread"
                     </p>
                 </div>
 
-                <div class="flex gap-2 justify-end">
-                    <button id="cancelAddBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
-                        Cancel
-                    </button>
-                    <button id="submitAddBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                        Add Items
-                    </button>
+                <div class="modal-actions">
+                    <button id="cancelAddBtn" class="btn btn-secondary">Cancel</button>
+                    <button id="submitAddBtn" class="btn btn-primary">Add Items</button>
                 </div>
             </div>
         </div>
@@ -152,46 +825,37 @@
 
     <!-- Settings Modal -->
     <div id="settingsModal" class="modal">
-        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold">Settings</h2>
-                <button id="closeSettingsBtn" class="text-gray-500 hover:text-gray-700 text-2xl">
-                    ×
-                </button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Settings</h2>
+                <button id="closeSettingsBtn" class="close-btn" aria-label="Close">×</button>
             </div>
 
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1">API URL</label>
-                    <input type="text" id="apiUrlInput"
-                           class="w-full border border-gray-300 rounded px-3 py-2"
+            <div>
+                <div class="form-group">
+                    <label class="form-label" for="apiUrlInput">API URL</label>
+                    <input type="text" id="apiUrlInput" class="form-input"
                            placeholder="http://localhost:8080">
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium mb-1">API Key</label>
-                    <input type="password" id="apiKeyInput"
-                           class="w-full border border-gray-300 rounded px-3 py-2"
+                <div class="form-group">
+                    <label class="form-label" for="apiKeyInput">API Key</label>
+                    <input type="password" id="apiKeyInput" class="form-input"
                            placeholder="your-api-key">
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium mb-1">List ID</label>
-                    <input type="text" id="listIdInput"
-                           class="w-full border border-gray-300 rounded px-3 py-2"
+                <div class="form-group">
+                    <label class="form-label" for="listIdInput">List ID</label>
+                    <input type="text" id="listIdInput" class="form-input"
                            placeholder="List ID (leave empty to create new)">
-                    <p class="text-xs text-gray-600 mt-1">
+                    <p class="form-hint">
                         Leave empty to create a new list on first load
                     </p>
                 </div>
 
-                <div class="flex gap-2 justify-end">
-                    <button id="cancelSettingsBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
-                        Cancel
-                    </button>
-                    <button id="saveSettingsBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                        Save
-                    </button>
+                <div class="modal-actions">
+                    <button id="cancelSettingsBtn" class="btn btn-secondary">Cancel</button>
+                    <button id="saveSettingsBtn" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>
@@ -199,15 +863,13 @@
 
     <!-- Recipe Detail Modal -->
     <div id="recipeDetailModal" class="modal">
-        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h2 id="recipeDetailTitle" class="text-xl font-bold"></h2>
-                <button id="closeRecipeDetailBtn" class="text-gray-500 hover:text-gray-700 text-2xl">
-                    ×
-                </button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="recipeDetailTitle" class="modal-title"></h2>
+                <button id="closeRecipeDetailBtn" class="close-btn" aria-label="Close">×</button>
             </div>
 
-            <div id="recipeDetailContent" class="space-y-4">
+            <div id="recipeDetailContent" class="items-container">
                 <!-- Recipe items will be rendered here -->
             </div>
         </div>

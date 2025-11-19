@@ -125,11 +125,11 @@ class UIController {
         this.state.viewMode = mode;
 
         if (mode === 'all') {
-            this.elements.viewAllBtn.className = 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700';
-            this.elements.viewByRecipeBtn.className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            this.elements.viewAllBtn.className = 'btn btn-primary';
+            this.elements.viewByRecipeBtn.className = 'btn btn-secondary';
         } else {
-            this.elements.viewAllBtn.className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
-            this.elements.viewByRecipeBtn.className = 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700';
+            this.elements.viewAllBtn.className = 'btn btn-secondary';
+            this.elements.viewByRecipeBtn.className = 'btn btn-primary';
         }
 
         this.render();
@@ -249,16 +249,16 @@ class UIController {
         const requiredItems = items.filter(i => i.required);
         const completedItems = requiredItems.filter(i => i.completed);
         const progress = requiredItems.length > 0
-            ? `${completedItems.length}/${requiredItems.length}`
-            : '0/0';
+            ? `${completedItems.length}/${requiredItems.length} items`
+            : 'No items';
 
         return `
-            <div class="recipe-group bg-white rounded-lg shadow p-4 mb-4">
-                <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-lg font-semibold">${this.escapeHtml(name)}</h3>
-                    <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">[${progress}]</span>
+            <div class="recipe-group">
+                <div class="recipe-header">
+                    <div class="recipe-name">${this.escapeHtml(name)}</div>
+                    <div class="recipe-progress">${progress}</div>
                 </div>
-                <div class="space-y-2">
+                <div class="items-container">
                     ${items.map(item => this.renderItem(item)).join('')}
                 </div>
             </div>
@@ -268,24 +268,33 @@ class UIController {
     renderItem(item) {
         const completedClass = item.completed ? 'item-completed' : '';
         const notRequiredClass = !item.required ? 'item-not-required' : '';
-        const checkbox = item.completed ? '✓' : '○';
 
-        const quantityText = item.quantity ? ` <span class="text-gray-600">${this.escapeHtml(item.quantity)}</span>` : '';
-        const notRequiredBadge = !item.required ? ' <span class="text-xs bg-gray-200 px-2 py-1 rounded">NOT NEEDED</span>' : '';
+        const categoryBadge = item.category ? `<span class="item-category">${this.escapeHtml(item.category)}</span>` : '';
 
         return `
-            <div class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded ${completedClass} ${notRequiredClass}"
-                 data-item-id="${item.id}">
-                <button class="toggle-complete text-2xl" data-item-id="${item.id}">
-                    ${checkbox}
-                </button>
-                <div class="flex-1">
-                    <span class="font-medium">${this.escapeHtml(item.name)}</span>${quantityText}${notRequiredBadge}
-                    ${item.notes ? `<div class="text-sm text-gray-500">${this.escapeHtml(item.notes)}</div>` : ''}
+            <div class="${completedClass} ${notRequiredClass}">
+                <div class="item-card">
+                    <div class="item-header">
+                        <input type="checkbox"
+                               class="item-checkbox toggle-complete"
+                               data-item-id="${item.id}"
+                               ${item.completed ? 'checked' : ''}>
+                        <div class="item-content">
+                            <div class="item-name">${this.escapeHtml(item.name)}</div>
+                            ${item.quantity ? `<div class="item-quantity">${this.escapeHtml(item.quantity)}</div>` : ''}
+                            ${item.notes ? `<div class="item-notes">${this.escapeHtml(item.notes)}</div>` : ''}
+                            ${categoryBadge}
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="item-btn item-btn-required toggle-required" data-item-id="${item.id}">
+                            ${item.required ? 'Mark Not Needed' : 'Mark Needed'}
+                        </button>
+                        <button class="item-btn item-btn-delete delete-item" data-item-id="${item.id}">
+                            Delete
+                        </button>
+                    </div>
                 </div>
-                <button class="delete-item text-red-500 hover:text-red-700" data-item-id="${item.id}">
-                    🗑️
-                </button>
             </div>
         `;
     }
@@ -296,6 +305,14 @@ class UIController {
             btn.addEventListener('click', async (e) => {
                 const itemId = e.target.dataset.itemId;
                 await this.handleToggleComplete(itemId);
+            });
+        });
+
+        // Toggle required
+        document.querySelectorAll('.toggle-required').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const itemId = e.target.dataset.itemId;
+                await this.handleToggleRequired(itemId);
             });
         });
 
@@ -338,6 +355,25 @@ class UIController {
             this.render();
         } catch (error) {
             this.showError(`Failed to delete item: ${error.message}`);
+        }
+    }
+
+    async handleToggleRequired(itemId) {
+        const item = this.state.items.find(i => i.id === itemId);
+        if (!item) return;
+
+        try {
+            await this.state.api.toggleRequired(
+                this.state.currentList.id,
+                itemId,
+                !item.required
+            );
+
+            // Update local state
+            item.required = !item.required;
+            this.render();
+        } catch (error) {
+            this.showError(`Failed to update item: ${error.message}`);
         }
     }
 
