@@ -1,0 +1,163 @@
+{
+  "recipe_id": "7f8e9a2b-4c5d-4e6f-8a9b-1c2d3e4f5a6b",
+  "title": "Air Fryer Red Lentil Koftas",
+  "description": "Spiced red lentil patties with aromatic herbs and warming spices, air-fried until golden and crispy. These protein-rich koftas are perfect served with yoghurt sauce, fresh salad, and warm flatbreads for a satisfying pescatarian meal.",
+  "servings": 2,
+  "dietary_tags": ["vegetarian", "piscatarian", "low_cholesterol", "high_protein", "high_fibre"],
+  "cooking_method": "air_fryer",
+  "times": {
+    "prep_minutes": 15,
+    "cook_minutes": 15,
+    "total_minutes": 30
+  },
+  "ingredients": [
+    {
+      "name": "red lentils",
+      "quantity": "150g",
+      "category": "pulses",
+      "notes": "rinsed"
+    },
+    {
+      "name": "onion",
+      "quantity": "1 medium",
+      "category": "vegetables",
+      "notes": "finely chopped"
+    },
+    {
+      "name": "garlic",
+      "quantity": "2 cloves",
+      "category": "vegetables",
+      "notes": "minced"
+    },
+    {
+      "name": "fresh coriander",
+      "quantity": "small handful",
+      "category": "herbs",
+      "notes": "finely chopped"
+    },
+    {
+      "name": "fresh parsley",
+      "quantity": "small handful",
+      "category": "herbs",
+      "notes": "finely chopped"
+    },
+    {
+      "name": "ground cumin",
+      "quantity": "1 tsp",
+      "category": "spices",
+      "notes": ""
+    },
+    {
+      "name": "ground coriander",
+      "quantity": "1 tsp",
+      "category": "spices",
+      "notes": ""
+    },
+    {
+      "name": "paprika",
+      "quantity": "1 tsp",
+      "category": "spices",
+      "notes": ""
+    },
+    {
+      "name": "ground turmeric",
+      "quantity": "1/2 tsp",
+      "category": "spices",
+      "notes": ""
+    },
+    {
+      "name": "chilli flakes",
+      "quantity": "1/4 tsp",
+      "category": "spices",
+      "notes": "or to taste"
+    },
+    {
+      "name": "plain flour",
+      "quantity": "2 tbsp",
+      "category": "baking",
+      "notes": ""
+    },
+    {
+      "name": "salt",
+      "quantity": "to taste",
+      "category": "seasonings",
+      "notes": ""
+    },
+    {
+      "name": "black pepper",
+      "quantity": "to taste",
+      "category": "seasonings",
+      "notes": "freshly ground"
+    },
+    {
+      "name": "olive oil",
+      "quantity": "1 tbsp",
+      "category": "oils",
+      "notes": "for brushing"
+    }
+  ],
+  "method": [
+    {
+      "step": 1,
+      "instruction": "Cook red lentils in 400ml boiling water for 12-15 minutes until soft and most water is absorbed. Drain any excess water and allow to cool slightly."
+    },
+    {
+      "step": 2,
+      "instruction": "Transfer cooled lentils to a large bowl and mash roughly with a fork or potato masher, leaving some texture."
+    },
+    {
+      "step": 3,
+      "instruction": "Add chopped onion, garlic, fresh coriander, parsley, all the spices, flour, salt, and pepper to the mashed lentils. Mix thoroughly until well combined."
+    },
+    {
+      "step": 4,
+      "instruction": "With damp hands, shape the mixture into 8 small oval patties (about 6cm long). If mixture is too wet, add a little more flour."
+    },
+    {
+      "step": 5,
+      "instruction": "Preheat air fryer to 180°C for 3 minutes."
+    },
+    {
+      "step": 6,
+      "instruction": "Brush koftas lightly with olive oil on both sides and arrange in a single layer in the air fryer basket, leaving space between each one."
+    },
+    {
+      "step": 7,
+      "instruction": "Air fry at 180°C for 12-15 minutes, carefully flipping halfway through, until golden brown and crispy on the outside."
+    },
+    {
+      "step": 8,
+      "instruction": "Serve immediately with yoghurt sauce, fresh salad, and warm flatbreads or pitta."
+    }
+  ],
+  "equipment": [
+    "Medium saucepan",
+    "Colander",
+    "Large mixing bowl",
+    "Fork or potato masher",
+    "Air fryer",
+    "Pastry brush"
+  ],
+  "storage": {
+    "refrigerator_days": 3,
+    "freezer_months": 2,
+    "notes": "Store cooked koftas in an airtight container. Reheat in air fryer at 180°C for 5-6 minutes until heated through and crispy. Freeze uncooked shaped koftas on a tray, then transfer to freezer bags. Cook from frozen, adding 3-4 minutes to cooking time."
+  },
+  "serving_suggestions": [
+    "Yoghurt and mint sauce",
+    "Tahini dressing",
+    "Fresh tomato and cucumber salad",
+    "Warm pitta breads or flatbreads",
+    "Pickled vegetables",
+    "Hummus",
+    "Lemon wedges"
+  ],
+  "tips": [
+    "Make sure lentils are well-drained and cooled before mixing to prevent the mixture being too wet",
+    "Keep hands damp when shaping to prevent sticking",
+    "Don't overcrowd the air fryer - cook in batches if needed for best crispiness",
+    "For extra flavour, add 1/2 tsp of garam masala or a pinch of cayenne pepper",
+    "These work brilliantly in wraps with salad and pickles for lunch",
+    "Double the batch and freeze extras for quick midweek meals"
+  ]
+}
