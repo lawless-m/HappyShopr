@@ -46,7 +46,9 @@ init([]) ->
             {"/api/v1/lists/:list_id/recipes", items_handler, [recipes_summary]},
             {"/shopr/api/v1/lists/:list_id/recipes", items_handler, [recipes_summary]},
             {"/api/v1/lists/:list_id/recipes/:recipe_id/items", items_handler, [recipe_items]},
-            {"/shopr/api/v1/lists/:list_id/recipes/:recipe_id/items", items_handler, [recipe_items]}
+            {"/shopr/api/v1/lists/:list_id/recipes/:recipe_id/items", items_handler, [recipe_items]},
+            {"/api/v1/lists/:list_id/import-recipe", recipe_import_handler, []},
+            {"/shopr/api/v1/lists/:list_id/import-recipe", recipe_import_handler, []}
         ]}
     ]),
 
