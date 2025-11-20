@@ -1,6 +1,6 @@
 # HappyShopr 🛒
 
-A persistent shopping list service built with Erlang/OTP, designed for integration with Claude AI. Manage shopping lists via REST API or web interface with support for recipe grouping and intelligent item tracking.
+A persistent shopping list service built with Erlang/OTP, designed for integration with Claude AI. Manage shopping lists via REST API or web interface with support for recipe grouping and intelligent item tracking. fr
 
 ## Features
 

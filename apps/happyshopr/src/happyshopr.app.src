@@ -10,6 +10,7 @@
     cowboy,
     jsx
    ]},
+  {included_applications, [mnesia]},
   {env,[]},
   {modules, []},
   {licenses, ["Apache 2.0"]},

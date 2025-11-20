@@ -4,7 +4,7 @@ This document contains the API configuration and usage instructions for Claude A
 
 ## API Configuration
 
-**Base URL:** `https://steponnopets.net/shopr/api/v1`
+**Base URL:** `http://steponnopets.net/shopr/api/v1`
 **API Key:** `demo-api-key-replace-in-production`
 **Authentication:** Bearer token (include in all requests)
 
@@ -15,7 +15,7 @@ Authorization: Bearer demo-api-key-replace-in-production
 Content-Type: application/json
 ```
 
-**Note:** The service is accessible at `https://steponnopets.net/shopr/`
+**Note:** The service is accessible at `http://steponnopets.net/shopr/` (HTTP used due to SSL certificate chain issue - fix with hosting provider for HTTPS)
 
 ## Core Workflows
 
